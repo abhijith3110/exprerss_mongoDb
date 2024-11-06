@@ -9,7 +9,7 @@ router.get("/users", getAllUsers)
 
 router.get("/user/:id", getOneUser)
 
-router.put("/update/:id", updateUser)
+router.put("/update/:id", upload.single('file'), updateUser)
 
 router.delete("/delete/:id", deleteUser)
 

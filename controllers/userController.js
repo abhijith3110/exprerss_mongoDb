@@ -23,11 +23,13 @@ export const createUser = async (req, res, next) => {
     try {
 
         const { name, age } = req.body;
-        const  userImage = req.file.path;
+        const userImage = req.file.path;
+
+        const Image = userImage.slice(8)
 
         try {
-            
-            const userCreate = new UserModel({ name, age, image: userImage})
+
+            const userCreate = new UserModel({ name, age, image: Image })
             await userCreate.save();
             res.status(201).json({ message: `${userCreate.name} is Created Successfully`, data: userCreate })
 
@@ -138,26 +140,48 @@ export const getOneUser = async (req, res, next) => {
 
 
 export const updateUser = async (req, res, next) => {
+
     try {
         const { id } = req.params;
         const userData = { ...req.body };
 
+        if (req.file && req.file.path) {
+            userData.image = req.file.path.slice(8);
+        }
+
         if (id) {
-            const updatedUserData = await UserModel.findOneAndUpdate({ _id: id }, { $set: userData }, { new: true, runValidators: true });
+
+            const updatedUserData = await UserModel.findOneAndUpdate (
+                
+                { _id: id }, 
+                { $set: userData }, 
+                { new: true, runValidators: true }
+
+            );
             console.log(typeof (updatedUserData));
 
             if (updatedUserData) {
+
                 res.status(200).json({ message: "User updated successfully", data: updatedUserData });
+
             } else {
+
                 res.status(404).json({ message: "User not found" });
+
             }
         } else {
+
             res.status(400).json({ message: "User ID is required" });
+
         }
+
     } catch (error) {
+
         console.log(error);
         next(new Error(`Failed to update user with ID ${req.params.id}. Please try again later.`));
+
     }
+
 };
 
 
