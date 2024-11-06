@@ -19,12 +19,6 @@ app.use((req, res, next) => {
   next()
 });
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Internal Server Error" })
-  next()
-})
-
 const Port = process.env.PORT || 8081;
 
 app.listen(Port, () => {

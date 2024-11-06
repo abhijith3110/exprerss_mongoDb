@@ -19,16 +19,31 @@ import UserModel from "../models/userSchema.js";
 
 
 export const createUser = async (req, res, next) => {
+
     try {
+
         const { name, age } = req.body;
-        const userCreate = new UserModel({ name, age })
-        await userCreate.save();
-        res.status(201).json({ message: `${userCreate.name} is Created Successfully`, data: userCreate })
+        const  userImage = req.file.path;
+
+        try {
+            
+            const userCreate = new UserModel({ name, age, image: userImage})
+            await userCreate.save();
+            res.status(201).json({ message: `${userCreate.name} is Created Successfully`, data: userCreate })
+
+        } catch (error) {
+            console.log(error);
+        }
+
     } catch (error) {
+
         next(new Error("Internal Server Error"))
         res.status(500).json({ message: "Failed to get users. Please try again later." })
+
     }
+
 }
+
 
 //list all users
 
