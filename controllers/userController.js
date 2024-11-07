@@ -1,6 +1,6 @@
 import UserModel from "../models/userSchema.js";
 
-//Create User
+/** Create User */
 
 // export const createUser = async (req, res, next) => {
 //     try {
@@ -40,7 +40,7 @@ export const createUser = async (req, res, next) => {
     } catch (error) {
 
         next(new Error("Internal Server Error"))
-        res.status(500).json({ message: "Failed to get users. Please try again later." })
+        res.status(500).json({ message: "Failed to uplad users. Please try again later." })
 
     }
 
